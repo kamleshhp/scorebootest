@@ -1,6 +1,6 @@
 {
   "ipcMode": null,
-  "executionRoleArn": "arn:aws:iam::990085597987:role/AWSECSTaskExectionRole",
+  "executionRoleArn": "arn:aws:iam::990085597987:role/ecsTaskExecutionRole",
   "containerDefinitions": [
     {
       "dnsSearchDomains": null,
@@ -9,7 +9,7 @@
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "/ecs/score-task",
+          "awslogs-group": "/ecs/score-aws-ecr",
           "awslogs-region": "us-east-2",
           "awslogs-stream-prefix": "ecs"
         }
@@ -17,9 +17,14 @@
       "entryPoint": [],
       "portMappings": [
         {
-          "hostPort": 0,
+          "hostPort": 8080,
           "protocol": "tcp",
           "containerPort": 8080
+        },
+        {
+          "hostPort": 80,
+          "protocol": "tcp",
+          "containerPort": 80
         }
       ],
       "command": [],
@@ -33,11 +38,11 @@
       "workingDirectory": null,
       "secrets": null,
       "dockerSecurityOptions": null,
-      "memory": 1000,
-      "memoryReservation": 500,
+      "memory": 1024,
+      "memoryReservation": null,
       "volumesFrom": [],
       "stopTimeout": null,
-      "image": "990085597987.dkr.ecr.us-east-2.amazonaws.com/score_repo:score",
+      "image": "990085597987.dkr.ecr.us-east-2.amazonaws.com/score-registry:latest",
       "startTimeout": null,
       "firelensConfiguration": null,
       "dependsOn": null,
@@ -58,14 +63,14 @@
     }
   ],
   "placementConstraints": [],
-  "memory": null,
-  "taskRoleArn": "arn:aws:iam::990085597987:role/AWSECSTaskExectionRole",
+  "memory": "1024",
+  "taskRoleArn": null,
   "compatibilities": [
-    "EXTERNAL",
-    "EC2"
+    "EC2",
+    "FARGATE"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:us-east-2:990085597987:task-definition/score-task:1",
-  "family": "score-task",
+  "taskDefinitionArn": "arn:aws:ecs:us-east-2:990085597987:task-definition/score-aws-ecr:1",
+  "family": "score-aws-ecr",
   "requiresAttributes": [
     {
       "targetId": null,
@@ -95,28 +100,28 @@
       "targetId": null,
       "targetType": null,
       "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.task-iam-role"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
       "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
+      "name": "ecs.capability.task-eni"
     }
   ],
   "pidMode": null,
   "requiresCompatibilities": [
-    "EC2"
+    "FARGATE"
   ],
-  "networkMode": "bridge",
+  "networkMode": "awsvpc",
   "runtimePlatform": null,
-  "cpu": null,
+  "cpu": "512",
   "revision": 1,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
